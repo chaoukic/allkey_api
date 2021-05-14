@@ -64,6 +64,8 @@ CREATE TABLE Contractors (
     Name varchar(255)  NOT NULL,
     Phonenumber varchar(255)  NOT NULL,
     Address varchar(255)  NOT NULL,
+    PhoneVerification boolean NOT NULL DEFAULT FALSE,
+    AdminVerification boolean NOT NULL DEFAULT FALSE,
     created_at timestamp(0)  DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp(0) DEFAULT CURRENT_TIMESTAMP
 );
@@ -78,6 +80,8 @@ CREATE TABLE LandLords (
     Phonenumber varchar(255)  NOT NULL,
     Email varchar(255)  NOT NULL,
     Password varchar(255)  NOT NULL,
+    PhoneVerification boolean NOT NULL DEFAULT FALSE,
+    AdminVerification boolean NOT NULL DEFAULT FALSE,
     created_at timestamp(0)  DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp(0) DEFAULT CURRENT_TIMESTAMP
 );
@@ -93,6 +97,8 @@ CREATE TABLE Tenants (
     Phonenumber varchar(255)  NOT NULL,
     Email varchar(255)  NOT NULL,
     Password varchar(255)  NOT NULL,
+    PhoneVerification boolean NOT NULL DEFAULT FALSE,
+    AdminVerification boolean NOT NULL DEFAULT FALSE,
     created_at timestamp(0)  DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp(0) DEFAULT CURRENT_TIMESTAMP
 );

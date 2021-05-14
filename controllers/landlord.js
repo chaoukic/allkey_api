@@ -54,6 +54,35 @@ const updateLandLord = (call, pool) => {
       throw error;
     });
 };
+const validatePhoneVerificiation = (call, pool) => {
+  const query = {
+    text: "UPDATE landlords SET  PhoneVerification= $1 WHERE id = $2",
+    values: [true, call.request.id],
+  };
+  return pool
+    .query(query)
+    .then((results) => {
+      return results.rows;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+const validateAdminVerification = (call, pool) => {
+  const query = {
+    text: "UPDATE landlords SET  AdminVerification= $1 WHERE id = $2",
+    values: [true, call.request.id],
+  };
+  return pool
+    .query(query)
+    .then((results) => {
+      return results.rows;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
 
 const deleteLandLord = (call, pool) => {
   const query = {
@@ -91,4 +120,6 @@ module.exports = {
   createLandLord,
   updateLandLord,
   deleteLandLord,
+  validatePhoneVerificiation,
+  validateAdminVerification,
 };

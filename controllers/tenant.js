@@ -70,6 +70,36 @@ const deleteTenant = (call, pool) => {
     });
 };
 
+const validatePhoneVerificiation = (call, pool) => {
+  const query = {
+    text: "UPDATE tenants SET  PhoneVerification= $1 WHERE id = $2",
+    values: [true, call.request.id],
+  };
+  return pool
+    .query(query)
+    .then((results) => {
+      return results.rows;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+const validateAdminVerification = (call, pool) => {
+  const query = {
+    text: "UPDATE tenants SET  AdminVerification= $1 WHERE id = $2",
+    values: [true, call.request.id],
+  };
+  return pool
+    .query(query)
+    .then((results) => {
+      return results.rows;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
 const findTenant = (call, pool) => {
   const query = {
     text: "Select * FROM tenants WHERE id = $1",
@@ -91,4 +121,6 @@ module.exports = {
   createTenant,
   updateTenant,
   deleteTenant,
+  validatePhoneVerificiation,
+  validateAdminVerification,
 };

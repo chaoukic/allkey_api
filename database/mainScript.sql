@@ -4,66 +4,67 @@
 -- tables
 -- Table: Contract
 CREATE DATABASE  IF NOT EXISTS AllKey;
-CREATE USER 'mainLogin'@'localhost' IDENTIFIED BY 'ncw7:!ZPM3A)A4"b';
+CREATE USER IF NOT EXISTS 'mainLogin'@'localhost' IDENTIFIED BY 'ncw7:!ZPM3A)A4"b';
 GRANT ALL PRIVILEGES ON AllKey.* TO 'mainLogin';
 
+use AllKey;
 
 CREATE TABLE Contract (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT ,
     Contractors_id int NOT NULL,
     Tenants_id int NOT NULL,
     Estimation decimal(7,2) NOT NULL,
     Cause varchar(255) NOT NULL,
-    Created_at timestamp NOT NULL,
-    Updated_at timestamp NOT NULL,
+    Created_at timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
+    Updated_at timestamp NOT NULL  DEFAULT  CURRENT_TIMESTAMP,
     LandLords_id int NOT NULL,
     CONSTRAINT Contract_pk PRIMARY KEY (id)
 );
 
 -- Table: Contractor_Type
 CREATE TABLE Contractor_Type (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     type varchar(255) NOT NULL,
     CONSTRAINT Contractor_Type_pk PRIMARY KEY (id)
 );
 
 -- Table: Contractors
 CREATE TABLE Contractors (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     Contractor_Type_id int NOT NULL,
-    Email varchar(255) NOT NULL,
+    Email varchar(255) UNIQUE NOT NULL,
     Password varchar(255) NOT NULL,
     Name varchar(255) NOT NULL,
-    Phonenumber varchar(255) NOT NULL,
+    Phonenumber varchar(255) UNIQUE NOT NULL,
     Addrerss varchar(255) NOT NULL,
-    Created_at timestamp NOT NULL,
-    Updated_at timestamp NOT NULL,
+    Created_at timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
+    Updated_at timestamp NOT NULL  DEFAULT  CURRENT_TIMESTAMP,
     CONSTRAINT Contractors_pk PRIMARY KEY (id)
 );
 
 -- Table: LandLords
 CREATE TABLE LandLords (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     Firstname varchar(255) NOT NULL,
     Lastname varchar(255) NOT NULL,
-    Phonenumber varchar(255) NOT NULL,
-    Email varchar(255) NOT NULL,
+    Phonenumber varchar(255) UNIQUE NOT NULL,
+    Email varchar(255) UNIQUE NOT NULL,
     Password varchar(255) NOT NULL,
-    Created_at timestamp NOT NULL,
-    Updated_at timestamp NOT NULL,
+    Created_at timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
+    Updated_at timestamp NOT NULL  DEFAULT  CURRENT_TIMESTAMP,
     CONSTRAINT LandLords_pk PRIMARY KEY (id)
 );
 
 -- Table: Property
 CREATE TABLE Property (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     Address varchar(255) NOT NULL,
     PostalCode varchar(255) NOT NULL,
     City varchar(255) NOT NULL,
     Country varchar(255) NOT NULL,
     Rent decimal(7,2) NOT NULL,
-    Created_at timestamp NOT NULL,
-    Updated_at timestamp NOT NULL,
+    Created_at timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
+    Updated_at timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
     Tenants_id int NOT NULL,
     LandLords_id int NOT NULL,
     CONSTRAINT Property_pk PRIMARY KEY (id)
@@ -71,39 +72,39 @@ CREATE TABLE Property (
 
 -- Table: Tenants
 CREATE TABLE Tenants (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     Firstname varchar(255) NOT NULL,
     Lastname varchar(255) NOT NULL,
-    Phonenumber varchar(255) NOT NULL,
-    Email varchar(255) NOT NULL,
+    Phonenumber varchar(255) UNIQUE NOT NULL,
+    Email varchar(255) UNIQUE NOT NULL,
     Password varchar(255) NOT NULL,
-    Created_at timestamp NOT NULL,
-    Updated_at timestamp NOT NULL,
+    Created_at timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
+    Updated_at timestamp NOT NULL  DEFAULT  CURRENT_TIMESTAMP,
     CONSTRAINT Tenants_pk PRIMARY KEY (id)
 );
 
 -- Table: Transaction_Rent
 CREATE TABLE Transaction_Rent (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     Property_id int NOT NULL,
     Tenants_id int NOT NULL,
     Price decimal(7,2) NOT NULL,
     IsPaid boolean NOT NULL,
     Paid_at timestamp NOT NULL,
-    Created_at timestamp NOT NULL,
-    Updated_at timestamp NOT NULL,
+    Created_at timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
+    Updated_at timestamp NOT NULL  DEFAULT  CURRENT_TIMESTAMP,
     CONSTRAINT Transaction_Rent_pk PRIMARY KEY (id)
 );
 
 -- Table: Transactions
 CREATE TABLE Transactions (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     Contract_id int NOT NULL,
     Payment_type varchar(255) NOT NULL,
     Amount decimal(7,2) NOT NULL,
     Note varchar(255) NOT NULL,
-    Created_at timestamp NOT NULL,
-    Updated_at timestamp NOT NULL,
+    Created_at timestamp NOT NULL DEFAULT  CURRENT_TIMESTAMP,
+    Updated_at timestamp NOT NULL  DEFAULT  CURRENT_TIMESTAMP,
     CONSTRAINT Transactions_pk PRIMARY KEY (id)
 );
 

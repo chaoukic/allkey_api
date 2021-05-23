@@ -266,9 +266,10 @@ const validateAdminVerification = async (req, res, next) => {
 const findTenant = async (req, res, next) => {
   try {
     const pool = poolObject.pool("AllKey");
-    const results = pool.query("Select * FROM tenants WHERE email = ?", [
-      req.body.email,
-    ]);
+    const [results, fields] = await pool.query(
+      "Select * FROM tenants WHERE email = ?",
+      [req.body.email]
+    );
     res.locals.result = {
       status: "valid",
       data: {
@@ -299,9 +300,10 @@ const findTenant = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const pool = poolObject.pool("AllKey");
-    const result = pool.query("Select password from tenants where email = $1", [
-      req.body.email,
-    ]);
+    const [result, fields] = await pool.query(
+      "Select password from tenants where email = ?",
+      [req.body.email]
+    );
     if (helper.comparePassword(req.body.password, result[0]["password"])) {
       res.locals.result = {
         status: "valid",

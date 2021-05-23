@@ -30,7 +30,7 @@ const findAllTenants = async (req, res, next) => {
         message: "An error occured while processing your request",
       },
       message:
-        "An issue happened while fetching all the tenants from the USERS database  \n" +
+        "An issue happened while fetching all the tenants from the database  \n" +
         "The error is " +
         error +
         "  \n" +

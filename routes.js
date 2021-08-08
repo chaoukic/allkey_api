@@ -4,22 +4,18 @@ const responseParser = require("./lib/request").requestParser;
 
 module.exports = (server) => {
   server.post(
-    "/api/auth/tenants/register",
+    "/api/tenants/register",
     tenantController.createTenant,
     responseParser
   );
+  server.post("/api/tenants/login", tenantController.login, responseParser);
   server.post(
-    "/api/auth/tenants/login",
-    tenantController.login,
-    responseParser
-  );
-  server.post(
-    "/api/tenants/update",
+    "/api/auth/tenants/update",
     tenantController.updateTenant,
     responseParser
   );
   server.post(
-    "/api/tenants/phoneValidation",
+    "/api/auth/tenants/phoneValidation",
     tenantController.validatePhoneVerificiation,
     responseParser
   );
@@ -29,14 +25,14 @@ module.exports = (server) => {
     landlordController.createLandLord,
     responseParser
   );
-  //server.post("/api/landlord/login", landlordController.login,responseParser);
+  server.post("/api/landlord/login", landlordController.login, responseParser);
   server.post(
-    "/api/landlord/update",
+    "/api/auth/landlord/update",
     landlordController.updateLandLord,
     responseParser
   );
   server.post(
-    "/api/landlord/phoneValidation",
+    "/api/auth/landlord/phoneValidation",
     landlordController.validatePhoneVerificiation,
     responseParser
   );

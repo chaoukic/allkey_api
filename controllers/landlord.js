@@ -1,5 +1,9 @@
 /**
  * Create all CRUD statements for a Landlord
+ * SMALL NOTE -- ERROR CODE 200 -- REPRESENTS A DATABASE RELATED ISSUE
+ *            -- ERROR CODE 100 -- REPRESENTS A INVALID LOGIN MADE BY A USER -- CAN BE A TENANT OR LANDLORD OR CONTRACTOR
+ *
+ *
  */
 const helper = require("../lib/passwords");
 const poolObject = require("../database/db");

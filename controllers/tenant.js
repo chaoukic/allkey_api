@@ -43,6 +43,7 @@ const findAllTenants = async (req, res, next) => {
 
 const createTenant = async (req, res, next) => {
   try {
+    console.log(req.body)
     const pool = poolObject.pool("AllKey");
     const hash = await helper.hashPassword(req.body.password);
     const results = await pool.execute(

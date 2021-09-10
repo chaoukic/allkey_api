@@ -305,30 +305,50 @@ const login = async (req, res, next) => {
       "Select password from tenants where email = ?",
       [req.body.email]
     );
-    if (helper.comparePassword(req.body.password, result[0]["password"])) {
-      res.locals.result = {
-        status: "valid",
-        data: true,
-        message:
-          "Valid login for the tenant with the following email " +
-          req.body.email,
-      };
-      next();
-    } else {
+    if (result.length == 0 ){
       res.locals.result = {
         status: "invalid",
-        responseStatus: 403,
+        responseStatus: 200,
         error_code: 100,
         data: {
           status: false,
-          message: "Invalid Login, password or email are not matched",
+          message: "The emaiil you have entered has yet to be registerd: " + req.body.email,
         },
         message:
-          "Invalid login for the tenant with the following email " +
+          "The emaiil you have entered has yet to be registerd: " +
           req.body.email,
       };
       next();
     }
+    else{
+      if (await helper.comparePassword(req.body.password, result[0]["password"])) {
+        res.locals.result = {
+          status: "valid",
+          data: {
+            status: true
+          },
+          message:
+            "Valid login for the tenant with the following email " +
+            req.body.email,
+        };
+        next();
+      } else {
+        res.locals.result = {
+          status: "invalid",
+          responseStatus: 200,
+          error_code: 100,
+          data: {
+            status: false,
+            message: "Invalid Login, password or email are not matched",
+          },
+          message:
+            "Invalid login for the tenant with the following email " +
+            req.body.email,
+        };
+        next();
+      }
+    }
+
   } catch (error) {
     res.locals.result = {
       status: "invalid",

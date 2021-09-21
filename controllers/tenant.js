@@ -8,6 +8,7 @@
  */
 const helper = require("../lib/passwords");
 const poolObject = require("../database/db");
+const jwt = require('jsonwebtoken')
 const findAllTenants = async (req, res, next) => {
   try {
     const pool = poolObject.pool("AllKey");
@@ -43,7 +44,20 @@ const findAllTenants = async (req, res, next) => {
 
 const createTenant = async (req, res, next) => {
   try {
-    console.log(req.body)
+    const {email,firstname,lastname,phonenumber,password}= req.body
+    if (!(email && password && lastname && phonenumber && firstname)) {
+      res.locals.result = {
+        status: "invalid",
+        responseStatus: 200,
+        error_code: 100,
+        data: {
+          status: false,
+          message: "Invalid registration, you have not provided everything required",
+        },
+        message:
+          "Invalid registration not enough information has been given"
+      };
+    }
     const pool = poolObject.pool("AllKey");
     const hash = await helper.hashPassword(req.body.password);
     const results = await pool.execute(
@@ -57,6 +71,7 @@ const createTenant = async (req, res, next) => {
       ]
     );
     if (results[0]["affectedRows"] != 1) {
+      
       res.locals.result = {
         status: "valid",
         data: {
@@ -70,10 +85,23 @@ const createTenant = async (req, res, next) => {
           " has not been created",
       };
     } else {
+      const token = jwt.sign(
+        { email },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "36000000h",
+        }
+      )
       res.locals.result = {
         status: "valid",
         data: {
           status: true,
+          token: token,
+          user:{
+            firstName: firstname,
+            lastName: lastname,
+            email: email              
+          },
           message: "User has been created",
         },
         message:
@@ -301,8 +329,22 @@ const findTenant = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const pool = poolObject.pool("AllKey");
+    const {email,password} = req.body
+    if (!(email && password)) {
+      res.locals.result = {
+        status: "invalid",
+        responseStatus: 200,
+        error_code: 100,
+        data: {
+          status: false,
+          message: "Invalid Login, password and email are required",
+        },
+        message:
+          "Invalid login not enough information has been given"
+      };
+    }
     const [result, fields] = await pool.query(
-      "Select password from tenants where email = ?",
+      "Select password,firstName, lastName from tenants where email = ?",
       [req.body.email]
     );
     if (result.length == 0 ){
@@ -322,10 +364,24 @@ const login = async (req, res, next) => {
     }
     else{
       if (await helper.comparePassword(req.body.password, result[0]["password"])) {
+        const token = jwt.sign(
+          { email },
+          process.env.TOKEN_KEY,
+          {
+            expiresIn: "36000000h",
+          }
+        )
         res.locals.result = {
           status: "valid",
           data: {
-            status: true
+            status: true,
+            user:{
+              firstName: result[0]['firstName'],
+              lastName: result[0]['lastName'],
+              email: email              
+            },
+            token: token
+
           },
           message:
             "Valid login for the tenant with the following email " +
